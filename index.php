@@ -53,6 +53,9 @@
                 callbacks: {
                     onImageUpload: function(files) {
                         uploadImages(files);
+                    },
+			onMediaDelete: function(target) {
+                        $.delete(target[0].src);
                     }
                 }
             });
@@ -74,6 +77,22 @@
                     $.each(response.images, function(i, imageUrl) {
                         $('#summernote').summernote('insertImage', imageUrl);
                     });
+                }
+            });
+        }
+
+	$.delete = function(imageUrl) {
+            $.ajax({
+                url: '<?= base_url('delete-gambar') ?>',
+                type: 'POST',
+                data: {
+                    imageUrl: imageUrl
+                },
+                success: function(response) {
+                    console.log('Image deleted:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error deleting image', error);
                 }
             });
         }
